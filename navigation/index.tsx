@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import {FontAwesome} from '@expo/vector-icons';
+import {FontAwesome, AntDesign} from '@expo/vector-icons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {DarkTheme, DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -61,7 +61,12 @@ function BottomTabNavigator() {
         <BottomTab.Navigator
             initialRouteName="TabOne"
             screenOptions={{
+                headerShown: false,
                 tabBarActiveTintColor: Colors[colorScheme].tint,
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                    paddingVertical: 5
+                }
             }}>
             <BottomTab.Screen
                 name="TabOne"
@@ -90,7 +95,7 @@ function BottomTabNavigator() {
                 component={AddTransactionScreen}
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <TabBarIcon name="plus" color={color}/>,
+                    tabBarIcon: ({color}) => <AntDesign name="pluscircle" size={44} color="#955DF3" />,
                 }}
             />
             <BottomTab.Screen

@@ -3,8 +3,13 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
+import {useExpenses} from "../../hooks/useExpenses";
 
 export default function FeedScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  const { expenses } = useExpenses();
+
+  console.warn(expenses?.properties)
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Feed</Text>

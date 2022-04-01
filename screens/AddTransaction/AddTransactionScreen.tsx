@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         height: 50,
         color: 'black',
         fontWeight: 'bold',
-        fontSize: 35
+        fontSize: 35,
+        fontFamily: 'Optima'
     }
 });

@@ -1,7 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {View} from '../../../components/Themed'
 import useColorScheme from "../../../hooks/useColorScheme";
 import Colors from "../../../constants/Colors";
+import {StyledText} from "../../../components/StyledText";
 
 const IncomeForm = () => {
     const colorScheme = useColorScheme();
@@ -29,7 +31,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
         letterSpacing: 0.3,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Optima'
     }
 });
 

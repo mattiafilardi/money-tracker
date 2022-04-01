@@ -1,9 +1,10 @@
 import React from 'react';
-import {View} from "../../../components/Themed";
+import {View, Text} from "../../../components/Themed";
 import Colors from "../../../constants/Colors";
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, TouchableOpacity} from "react-native";
 import {Transaction} from "../model/Transaction";
 import useColorScheme from "../../../hooks/useColorScheme";
+import {StyledText} from "../../../components/StyledText";
 
 interface TransactionSwitchProps {
     transactionType: Transaction['type'],
@@ -55,7 +56,8 @@ const styles = StyleSheet.create({
     switchButtonText: {
         fontSize: 16,
         fontWeight: '600',
-        letterSpacing: 0.3
+        letterSpacing: 0.3,
+        fontFamily: 'Optima'
     }
 });
 

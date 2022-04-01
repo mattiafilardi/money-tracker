@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View, Text} from "react-native";
 import useColorScheme from "../../../hooks/useColorScheme";
 import Colors from "../../../constants/Colors";
 
@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '600',
         letterSpacing: 0.3,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'Optima'
     }
 });
 

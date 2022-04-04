@@ -1,13 +1,17 @@
 import React from 'react';
-import {StyledText} from "../../../../components/StyledText";
-import {Expense} from "../../../AddTransaction/model/Expense";
-import {View} from "../../../../components/Themed";
+import {StyledText} from "../../../../../components/StyledText";
+import {Expense} from "../../../../../model/Expense";
+import {View} from "../../../../../components/Themed";
 import {StyleSheet, Text} from "react-native";
-import {formatDate} from "../../../../utils/dateFormat";
+import {formatDate} from "../../../../../utils/dateFormat";
+import CategoriesList from "./CategoriesList";
 
 interface ExpensesListItemProps {
     expense: Expense
 }
+
+//TODO: implement useMemo for avoid re-rendering?
+// TODO: check if categories exists
 
 const ExpensesListItem: React.VFC<ExpensesListItemProps> = ({expense}) => {
     return (
@@ -16,11 +20,7 @@ const ExpensesListItem: React.VFC<ExpensesListItemProps> = ({expense}) => {
                 <StyledText style={styles.textHeader}>{formatDate(expense.properties.Date.date.start)}</StyledText>
 
                 <View style={styles.categories}>
-                    {expense.properties.Categoria.multi_select.map(category =>
-                        <StyledText style={[styles.textHeader, {marginLeft: 5}]}>
-                            {category.name.split(' ')[0]}
-                        </StyledText>
-                    )}
+                    <CategoriesList categories={expense.properties.Categoria.multi_select} />
                 </View>
 
             </View>

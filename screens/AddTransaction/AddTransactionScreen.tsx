@@ -6,7 +6,7 @@ import GoBack from "../../components/GoBack";
 import useColorScheme from "../../hooks/useColorScheme";
 import Colors from "../../constants/Colors";
 import {useState} from "react";
-import {Transaction} from "./model/Transaction";
+import {Transaction} from "../../model/Transaction";
 import TransactionSwitch from "./components/TransactionSwitch";
 import ExpenseForm from "./components/ExpenseForm";
 import IncomeForm from "./components/IncomeForm";

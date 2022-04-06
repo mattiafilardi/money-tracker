@@ -4,32 +4,68 @@ import {RootTabScreenProps} from '../../types';
 import {useExpenses} from "../../hooks/useExpenses";
 import ExpensesList from "./components/ExpensesList/ExpensesList";
 import {useIncomes} from "../../hooks/useIncomes";
-import useColorScheme from "../../hooks/useColorScheme";
-import Colors from "../../constants/Colors";
 import Summary from "./components/Summary/Summary";
 import Loader from "../../components/Loader";
+import {Transaction} from "../../model/Transaction";
+import React, {useEffect, useState} from "react";
+import IncomesList from "./components/IncomesList/IncomesList";
+import {LinearGradient} from "expo-linear-gradient";
+import {getFirstDayOfMonth, getLastDayOfMonth} from "../../utils/dateFormat";
 
 export default function FeedScreen({navigation}: RootTabScreenProps<'TabOne'>) {
-    const {isLoading : isLoadingExpenses, expenses, getExpenses} = useExpenses();
-    const {isLoading: isLoadingIncomes, incomes} = useIncomes()
-    const colorScheme = useColorScheme();
+    const [category, setCategory] = useState<Transaction['type']>('expense')
+    const {isLoading: isLoadingExpenses, expenses, getExpenses} = useExpenses();
+    const {isLoading: isLoadingIncomes, getIncomes, incomes} = useIncomes()
+
+    const [totalExpenses, setTotalExpenses] = useState<number>(0)
+    const [totalIncomes, setTotalIncomes] = useState<number>(0)
+
+    const [datesRange, setDatesRange] = useState({
+        start: getFirstDayOfMonth(Date.now()),
+        end: getLastDayOfMonth(Date.now())
+    })
+
+    useEffect(() => {
+        getExpenses(datesRange.start, datesRange.end)
+        getIncomes(datesRange.start, datesRange.end)
+    }, [datesRange])
+
+    useEffect(() => {
+        const totalExpenses = expenses?.reduce((prev, current) => prev + current.properties.Amount.number, 0)
+        const totalIncomes = incomes?.reduce((prev, current) => prev + current.properties.Amount.number, 0)
+
+        setTotalExpenses(totalExpenses || 0);
+        setTotalIncomes(totalIncomes || 0);
+    }, [expenses, incomes])
 
     return (
-        <View style={[styles.container, {backgroundColor: Colors[colorScheme].tint}]}>
-            <Summary expenses={expenses} incomes={incomes} />
+        <>
+            {isLoadingExpenses || isLoadingIncomes ? <Loader/> : (
+                <View style={styles.container}>
+                    <LinearGradient
+                        colors={['#BAADFF', '#9381FF', '#745CFF']}
+                        style={styles.container}
+                    >
+                        <Summary
+                            setCategory={setCategory} totalExpenses={totalExpenses} totalIncomes={totalIncomes}
+                            datesRange={datesRange} setDatesRange={setDatesRange}
+                        />
+                    </LinearGradient>
 
-            {isLoadingExpenses || isLoadingIncomes ? <Loader /> : (
-                <View style={styles.transactionsContainer}>
-                    <ExpensesList expenses={expenses} getExpenses={getExpenses}/>
+                    <View style={styles.transactionsContainer}>
+                        {category === 'expense' && <ExpensesList expenses={expenses} getExpenses={getExpenses} datesRange={datesRange}/>}
+                        {category === 'income' && <IncomesList incomes={incomes} getIncomes={getIncomes} datesRange={datesRange} />}
+                    </View>
                 </View>
             )}
-        </View>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#9381FF'
     },
     transactionsContainer: {
         flex: 1,

@@ -62,10 +62,15 @@ function BottomTabNavigator() {
             initialRouteName="TabOne"
             screenOptions={{
                 headerShown: false,
+                tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
                 tabBarActiveTintColor: Colors[colorScheme].tint,
                 tabBarShowLabel: false,
                 tabBarStyle: {
-                    paddingVertical: 5
+                    paddingVertical: 5,
+                    marginBottom: 2
+                },
+                tabBarIconStyle: {
+                  flex: 1
                 }
             }}>
             <BottomTab.Screen
@@ -95,7 +100,7 @@ function BottomTabNavigator() {
                 component={AddTransactionScreen}
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <AntDesign name="pluscircle" size={44} color="#955DF3" />,
+                    tabBarIcon: ({color}) => <AntDesign name="pluscircle" size={44} color={Colors[colorScheme].tint} />,
                 }}
             />
             <BottomTab.Screen

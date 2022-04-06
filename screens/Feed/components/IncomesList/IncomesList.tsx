@@ -1,30 +1,30 @@
 import React, {useState} from 'react';
 import {Expense} from "../../../../model/Expense";
 import {FlatList, ListRenderItemInfo, RefreshControl, SafeAreaView, StyleSheet, View} from "react-native";
-import ExpensesListItem from "./components/ExpensesListItem";
+import {Income} from "../../../../model/Income";
+import IncomesListItem from "./components/IncomesListItem";
 
-
-interface ExpensesListProps {
-    expenses: Expense[] | null,
-    getExpenses: (start: string, end : string) => void,
+interface IncomesListProps {
+    incomes: Income[] | null,
+    getIncomes: (start: string, end : string) => void,
     datesRange: {start: string, end: string}
 }
 
-const ExpensesList: React.FC<ExpensesListProps> = ({expenses, getExpenses, datesRange}) => {
+const IncomesList: React.FC<IncomesListProps> = ({incomes, getIncomes, datesRange}) => {
     const [refreshing, setRefreshing] = useState<boolean>(false)
 
     const onRefresh = () => {
         setRefreshing(true);
-        getExpenses(datesRange.start, datesRange.end)
+        getIncomes(datesRange.start, datesRange.end)
         setRefreshing(false)
     }
 
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={expenses}
-                keyExtractor={(expense : Expense) => expense.id}
-                renderItem={({item}: ListRenderItemInfo<Expense>) => <ExpensesListItem expense={item} />}
+                data={incomes}
+                keyExtractor={(expense : Income) => expense.id}
+                renderItem={({item}: ListRenderItemInfo<Income>) => <IncomesListItem income={item} />}
                 initialNumToRender={4}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ExpensesList;
+export default IncomesList;

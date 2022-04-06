@@ -14,7 +14,7 @@ const GoBack: React.FC<GoBackProps> = ({navigation}) => {
 
     return (
         <Pressable style={[styles.container, {backgroundColor: Colors[colorScheme].secondaryColor}]} onPress={() => navigation.goBack()}>
-            <AntDesign name="arrowleft" size={28} color="#955DF3" />
+            <AntDesign name="arrowleft" size={28} color={Colors[colorScheme].tint} />
         </Pressable>
     );
 };

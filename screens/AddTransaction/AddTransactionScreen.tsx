@@ -29,6 +29,7 @@ export default function AddTransactionScreen({navigation}: RootTabScreenProps<'A
                                onChangeText={(text) => setTransactionAmount(Number(text))}
                                style={styles.amountInput}
                                placeholder="0  EUR €"
+                               placeholderTextColor={Colors[colorScheme].tabIconDefault}
                     />
                 </View>
             </TouchableWithoutFeedback>

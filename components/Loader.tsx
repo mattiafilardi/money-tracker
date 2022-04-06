@@ -1,11 +1,16 @@
 import React from 'react';
-import {View, Text, StyleSheet} from "react-native";
+import {StyleSheet, Image, ActivityIndicator} from "react-native";
+import {LinearGradient} from "expo-linear-gradient";
 
 const Loader = () => {
     return (
-        <View style={styles.container}>
-            <Text>Loading...</Text>
-        </View>
+        <LinearGradient
+            // Background Linear Gradient
+            colors={['#BAADFF', '#9381FF', '#745CFF']}
+            style={styles.container}
+        >
+            <ActivityIndicator color='white' animating />
+        </LinearGradient>
     );
 };
 

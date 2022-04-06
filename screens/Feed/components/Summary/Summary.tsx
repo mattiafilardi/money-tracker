@@ -1,103 +1,73 @@
-import React, {useEffect, useState} from 'react';
-import {Income} from "../../../../model/Income";
-import {Expense} from "../../../../model/Expense";
-import {SafeAreaView, StyleSheet, Text, View} from "react-native";
-import Colors from "../../../../constants/Colors";
+import React, {useState} from 'react';
+import {StyleSheet, View} from "react-native";
+import {Ionicons} from '@expo/vector-icons';
+import {Transaction} from "../../../../model/Transaction";
+import {LinearGradient} from 'expo-linear-gradient';
+import Balance from "./components/Balance";
+import Incomes from "./components/Incomes";
+import Expenses from "./components/Expenses";
 import useColorScheme from "../../../../hooks/useColorScheme";
-import {StyledText} from "../../../../components/StyledText";
+import Colors from "../../../../constants/Colors";
+import CalendarModal from "../../../../components/CalendarModal";
+import CalendarIcon from "./components/CalendarIcon";
+import DatesRange from './components/DatesRange';
+
+type DatesRange = { start: string, end: string }
 
 interface SummaryProps {
-    expenses: Expense[] | null,
-    incomes: Income[] | null
+    totalExpenses: number,
+    totalIncomes: number,
+    setCategory: (category: Transaction['type']) => void,
+    datesRange: any,
+    setDatesRange: (range: DatesRange) => void
 }
 
-const Summary: React.FC<SummaryProps> = ({expenses, incomes}) => {
+const Summary: React.FC<SummaryProps> = ({totalExpenses, totalIncomes, setCategory, datesRange, setDatesRange}) => {
     const colorScheme = useColorScheme();
-    const [totalExpenses, setTotalExpenses] = useState<number>(0)
-    const [totalIncomes, setTotalIncomes] = useState<number>(0)
-
-    useEffect(() => {
-        const totalExpenses = expenses?.reduce((prev, current) => prev + current.properties.Amount.number, 0)
-        const totalIncomes = incomes?.reduce((prev, current) => prev + current.properties.Amount.number, 0)
-
-        setTotalExpenses(totalExpenses || 0);
-        setTotalIncomes(totalIncomes || 0);
-    }, [expenses, incomes])
+    const [calendarModal, setOpenCalendarModal] = useState<boolean>(false)
 
     return (
-        <SafeAreaView style={[styles.summaryContainer, {backgroundColor: Colors[colorScheme].tint}]}>
-            <View style={{ flex: 1, marginTop: 100 }}>
-                <View style={styles.currentBalance}>
-                    <StyledText style={[styles.textBalance, {color: Colors[colorScheme].background}]}>
-                        CURRENT BALANCE
-                    </StyledText>
-                    <StyledText style={[styles.textBalanceNumber, {color: Colors[colorScheme].background}]}>
-                        € {(totalIncomes - totalExpenses).toFixed(2)}
-                    </StyledText>
+        <LinearGradient
+            colors={['#745CFF', '#9381FF', '#BAADFF']}
+            style={{flex: 1}}
+        >
+            <CalendarModal visible={calendarModal} setVisible={setOpenCalendarModal} datesRange={datesRange}
+                           setDatesRange={setDatesRange}/>
+
+            <View style={styles.summaryContainer}>
+                <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
+                    <CalendarIcon setOpenCalendarModal={setOpenCalendarModal} />
+
+                    <DatesRange range={datesRange} />
+
+                    <Ionicons name="filter-outline" size={28} color={Colors[colorScheme].background}/>
                 </View>
 
-                <View style={styles.row}>
-                    <View style={{ alignItems: 'center' }}>
-                        <StyledText>
-                            <StyledText style={styles.emoji}>🤑  </StyledText>
-                            <StyledText style={[styles.textBalance, {color: Colors[colorScheme].background}]}>INCOMES</StyledText>
-                        </StyledText>
+                <Balance totalIncomes={totalIncomes} totalExpenses={totalExpenses}/>
 
-                        <StyledText style={[styles.textTransactionNumber, {color: Colors[colorScheme].background}]}>
-                            € {totalIncomes.toFixed(2)}
-                        </StyledText>
-                    </View>
-
-                    <View style={{ alignItems: 'center' }}>
-                        <StyledText>
-                            <StyledText style={styles.emoji}>💸  </StyledText>
-                            <StyledText style={[styles.textBalance, {color: Colors[colorScheme].background}]}>EXPENSES</StyledText>
-                        </StyledText>
-
-                        <StyledText style={[styles.textTransactionNumber, {color: Colors[colorScheme].background}]}>
-                            -€ {totalExpenses.toFixed(2)}
-                        </StyledText>
-                    </View>
+                <View style={[styles.row, {justifyContent: 'space-around'}]}>
+                    <Incomes totalIncomes={totalIncomes} setCategory={setCategory}/>
+                    <Expenses totalExpenses={totalExpenses} setCategory={setCategory}/>
                 </View>
             </View>
 
-        </SafeAreaView>
+        </LinearGradient>
     );
 };
 
 const styles = StyleSheet.create({
     summaryContainer: {
         flex: 1,
-    },
-    currentBalance: {
-        flex: 1,
-        alignItems: 'center',
+        justifyContent: 'space-around',
     },
     row: {
         flex: 1,
+        marginTop: 30,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: 20
     },
-    textBalance: {
-        fontSize: 12,
-        letterSpacing: 2,
-        opacity: 0.7
-    },
-    textBalanceNumber: {
-        fontSize: 36,
-        letterSpacing: 3,
-        marginVertical: 10
-    },
-    emoji: {
-        opacity: 1,
-        fontSize: 14
-    },
-    textTransactionNumber: {
-        fontSize: 18,
-        letterSpacing: 1.5,
-        marginVertical: 10
-    }
 });
 
 

@@ -1,33 +1,30 @@
 import React from 'react';
 import {StyledText} from "../../../../../components/StyledText";
-import {Expense} from "../../../../../model/Expense";
 import {View} from "../../../../../components/Themed";
 import {StyleSheet, Text} from "react-native";
 import {formatDate} from "../../../../../utils/dateFormat";
-import CategoriesList from "./CategoriesList";
+import CategoriesList from "./../../ExpensesList/components/CategoriesList";
+import {Income} from "../../../../../model/Income";
 
-interface ExpensesListItemProps {
-    expense: Expense
+interface IncomesListItemProps {
+    income: Income
 }
 
-//TODO: implement useMemo for avoid re-rendering?
-// TODO: check if categories exists
-
-const ExpensesListItem: React.VFC<ExpensesListItemProps> = ({expense}) => {
+const IncomesListItem: React.VFC<IncomesListItemProps> = ({income}) => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <StyledText style={styles.textHeader}>{formatDate(expense.properties.Date.date.start)}</StyledText>
+                <StyledText style={styles.textHeader}>{formatDate(income.properties.Data.date.start)}</StyledText>
 
-                <CategoriesList categories={expense.properties.Categoria.multi_select} />
+                <CategoriesList categories={income.properties.Categoria.multi_select} />
             </View>
 
             <View style={styles.content}>
                 <View style={styles.row}>
-                    <Text style={styles.icon}>{expense.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
-                    <StyledText style={styles.textName}>{expense.properties.Spesa.title[0].text.content}</StyledText>
+                    <Text style={styles.icon}>{income.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                    <StyledText style={styles.textName}>{income.properties.Entrata.title[0].text.content}</StyledText>
                 </View>
-                <StyledText style={styles.textAmount}> - € {expense.properties.Amount.number}</StyledText>
+                <StyledText style={styles.textAmount}> € {income.properties.Amount.number}</StyledText>
             </View>
 
         </View>
@@ -49,6 +46,9 @@ const styles = StyleSheet.create({
         fontSize: 10,
         color: 'grey',
     },
+    categories: {
+        flexDirection: 'row',
+    },
     content: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     textAmount: {
-        color: '#EC4E20',
+        color: '#54a22a',
         fontWeight: 'bold',
         fontSize: 16
     }
 });
 
-export default ExpensesListItem;
+export default IncomesListItem;

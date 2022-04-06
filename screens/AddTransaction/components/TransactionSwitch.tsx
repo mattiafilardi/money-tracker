@@ -4,7 +4,6 @@ import Colors from "../../../constants/Colors";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import {Transaction} from "../../../model/Transaction";
 import useColorScheme from "../../../hooks/useColorScheme";
-import {StyledText} from "../../../components/StyledText";
 
 interface TransactionSwitchProps {
     transactionType: Transaction['type'],

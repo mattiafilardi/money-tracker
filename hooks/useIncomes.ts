@@ -1,8 +1,8 @@
 // @ts-ignore
-import { NOTION_SECRET, NOTION_INCOMES_DATABASE_ID } from '@env'
-import { Client } from "@notionhq/client";
+import {NOTION_INCOMES_DATABASE_ID, NOTION_SECRET} from '@env'
+import {Client} from "@notionhq/client";
 import {useEffect, useState} from "react";
-import {Income} from "../model/Income";
+import {Income, MultiSelect} from "../model/Income";
 import {getFirstDayOfMonth, getLastDayOfMonth} from "../utils/dateFormat";
 
 const notion = new Client({
@@ -12,6 +12,10 @@ const notion = new Client({
 export const useIncomes = () => {
     const [isLoading, setLoading] = useState<boolean>(false)
     const [incomes, setIncomes] = useState<Income[] | null>(null)
+
+    useEffect(() => {
+        getIncomes()
+    }, [])
 
     const getIncomes = async (startDate: string = getFirstDayOfMonth(Date.now()), endDate: string = getLastDayOfMonth(Date.now())) => {
         setLoading(true)
@@ -45,13 +49,63 @@ export const useIncomes = () => {
             .finally(() => setLoading(false))
     }
 
-    useEffect(() => {
-        getIncomes()
-    }, [])
+    const retrieveCategoryProperty = async () => {
+        const response = await notion.databases.retrieve({ database_id: NOTION_INCOMES_DATABASE_ID });
+        return response.properties.Categoria.multi_select.options as MultiSelect[]
+    }
+
+    const insertIncome = async () => {
+        const response = await notion.pages.create({
+            parent: {
+                database_id: NOTION_INCOMES_DATABASE_ID,
+            },
+            icon: {
+                type: "emoji",
+                emoji: "🥬"
+            },
+            properties: {
+                Entrata: {
+                    title: [
+                        {
+                            text: {
+                                content: 'Prova API',
+                            },
+                        },
+                    ],
+                },
+                Commento: {
+                    rich_text: [
+                        {
+                            text: {
+                                content: 'Commento',
+                            },
+                        },
+                    ],
+                },
+                Categoria: {
+                    "multi_select": [
+                        {
+                            "name": "Stipendio"
+                        },
+                    ]
+                },
+                Data: {
+                    "date": {
+                        "start": "2022-04-10"
+                    }
+                },
+                Amount: {
+                    number: 2.5,
+                },
+            }
+        });
+    }
 
     return {
         isLoading,
         getIncomes,
-        incomes
+        insertIncome,
+        incomes,
+        retrieveCategoryProperty
     }
 }

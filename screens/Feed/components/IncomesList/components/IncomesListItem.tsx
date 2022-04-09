@@ -21,7 +21,10 @@ const IncomesListItem: React.VFC<IncomesListItemProps> = ({income}) => {
 
             <View style={styles.content}>
                 <View style={styles.row}>
-                    <Text style={styles.icon}>{income.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                    {income.icon ?
+                        <Text style={styles.icon}>{income.icon.emoji}</Text> :
+                        <Text style={styles.icon}>{income.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                    }
                     <StyledText style={styles.textName}>{income.properties.Entrata.title[0].text.content}</StyledText>
                 </View>
                 <StyledText style={styles.textAmount}> € {income.properties.Amount.number}</StyledText>

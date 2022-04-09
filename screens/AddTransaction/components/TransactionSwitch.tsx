@@ -20,14 +20,14 @@ const TransactionSwitch: React.VFC<TransactionSwitchProps> = ({transactionType, 
                     onPress={() => {setTransactionType('expense')}}
                     style={[styles.switchButton, {backgroundColor: transactionType === 'expense' ? Colors[colorScheme].tint : Colors[colorScheme].secondaryColor}]}>
                     <Text style={
-                        [styles.switchButtonText, {color: transactionType === 'expense' ? Colors[colorScheme].background : Colors[colorScheme].tint}]
+                        [styles.switchButtonText, {color: transactionType === 'expense' ? 'white' : Colors[colorScheme].tint}]
                     }>EXPENSE</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {setTransactionType('income')}}
                     style={[styles.switchButton, {backgroundColor: transactionType === 'income' ? Colors[colorScheme].tint : Colors[colorScheme].secondaryColor}]}>
                     <Text style={
-                        [styles.switchButtonText, {color: transactionType === 'income' ? Colors[colorScheme].background : Colors[colorScheme].tint}]
+                        [styles.switchButtonText, {color: transactionType === 'income' ? 'white' : Colors[colorScheme].tint}]
                     }>INCOME</Text>
                 </TouchableOpacity>
             </View>

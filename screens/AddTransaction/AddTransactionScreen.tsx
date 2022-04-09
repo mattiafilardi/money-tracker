@@ -8,20 +8,27 @@ import Colors from "../../constants/Colors";
 import {useState} from "react";
 import {Transaction} from "../../model/Transaction";
 import TransactionSwitch from "./components/TransactionSwitch";
-import ExpenseForm from "./components/ExpenseForm";
-import IncomeForm from "./components/IncomeForm";
+import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
+import IncomeForm from "./components/IncomeForm/IncomeForm";
+import {useIncomes} from "../../hooks/useIncomes";
+import {useExpenses} from "../../hooks/useExpenses";
 
 export default function AddTransactionScreen({navigation}: RootTabScreenProps<'AddTab'>) {
     const colorScheme = useColorScheme();
+
+    const {retrieveCategoryProperty, insertIncome} = useIncomes()
+    const {insertExpense} = useExpenses();
+
     const [transactionType, setTransactionType] = useState<Transaction['type']>('expense')
     const [transactionAmount, setTransactionAmount] = useState<number>(0);
+
+    // TODO: emoji picker, finish income form (React Hook Form), call api after input fields have been filled
 
     return (
         <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
             <View style={styles.header}>
                 <GoBack navigation={navigation}/>
             </View>
-
 
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={styles.inputContainer}>
@@ -34,12 +41,12 @@ export default function AddTransactionScreen({navigation}: RootTabScreenProps<'A
                 </View>
             </TouchableWithoutFeedback>
 
-            <TransactionSwitch transactionType={transactionType} setTransactionType={setTransactionType} />
+            <TransactionSwitch transactionType={transactionType} setTransactionType={setTransactionType}/>
 
-            {transactionType === 'expense' && <ExpenseForm />}
+            {transactionType === 'expense' && <ExpenseForm insertExpense={insertExpense} amount={transactionAmount}/>}
 
-            {transactionType === 'income' && <IncomeForm />}
-
+            {transactionType === 'income' && <IncomeForm insertIncome={insertIncome} amount={transactionAmount}
+                                                         retrieveCategoryProperty={retrieveCategoryProperty}/>}
         </SafeAreaView>
     );
 };
@@ -55,8 +62,8 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     inputContainer: {
-        marginTop: 10,
-        marginBottom: 20,
+        marginTop: 5,
+        marginBottom: 15,
         alignItems: 'center'
     },
     amountInput: {

@@ -2,6 +2,8 @@ import React from 'react';
 import {StyleSheet, Image, ActivityIndicator} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 
+// TODO: render better Loader
+
 const Loader = () => {
     return (
         <LinearGradient

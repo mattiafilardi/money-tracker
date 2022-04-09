@@ -25,6 +25,8 @@ export default function FeedScreen({navigation}: RootTabScreenProps<'TabOne'>) {
         end: getLastDayOfMonth(Date.now())
     })
 
+    // TODO: render EmptyList component when expenses list or incomes list are empty
+
     useEffect(() => {
         getExpenses(datesRange.start, datesRange.end)
         getIncomes(datesRange.start, datesRange.end)

@@ -13,6 +13,13 @@ export const useExpenses = () => {
     const [isLoading, setLoading] = useState<boolean>(false)
     const [expenses, setExpenses] = useState<Expense[] | null>(null)
 
+    useEffect(() => {
+        getExpenses()
+    }, [])
+
+
+    // TODO: implement pagination (notion returns maximum 100 results for request)
+
     const getExpenses = async (startDate: string = getFirstDayOfMonth(Date.now()), endDate: string = getLastDayOfMonth(Date.now())) => {
         setLoading(true)
 
@@ -45,13 +52,14 @@ export const useExpenses = () => {
             .finally(() => setLoading(false))
     }
 
-    useEffect(() => {
-        getExpenses()
-    }, [])
+    const insertExpense = async () => {
+
+    }
 
     return {
         isLoading,
         getExpenses,
+        insertExpense,
         expenses
     }
 }

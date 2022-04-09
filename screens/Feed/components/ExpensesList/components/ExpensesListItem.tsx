@@ -24,7 +24,11 @@ const ExpensesListItem: React.VFC<ExpensesListItemProps> = ({expense}) => {
 
             <View style={styles.content}>
                 <View style={styles.row}>
-                    <Text style={styles.icon}>{expense.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                    {expense.icon ?
+                        <Text style={styles.icon}>{expense.icon.emoji}</Text> :
+                        <Text style={styles.icon}>{expense.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                    }
+
                     <StyledText style={styles.textName}>{expense.properties.Spesa.title[0].text.content}</StyledText>
                 </View>
                 <StyledText style={styles.textAmount}> - € {expense.properties.Amount.number}</StyledText>

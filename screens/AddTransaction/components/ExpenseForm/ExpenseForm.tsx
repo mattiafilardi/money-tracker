@@ -1,14 +1,19 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Text} from "react-native";
-import useColorScheme from "../../../hooks/useColorScheme";
-import Colors from "../../../constants/Colors";
+import useColorScheme from "../../../../hooks/useColorScheme";
+import Colors from "../../../../constants/Colors";
 
-const ExpenseForm = () => {
+interface ExpenseFormProps {
+    insertExpense: () => void,
+    amount: number
+}
+
+const ExpenseForm: React.FC<ExpenseFormProps> = ({insertExpense, amount}) => {
     const colorScheme = useColorScheme();
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={() => {}} style={[styles.button, {backgroundColor: Colors[colorScheme].tint}]}>
+            <TouchableOpacity onPress={() => {insertExpense()}} style={[styles.button, {backgroundColor: Colors[colorScheme].tint}]}>
                 <Text style={styles.buttonText}>Add expense</Text>
             </TouchableOpacity>
         </View>

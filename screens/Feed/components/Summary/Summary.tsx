@@ -7,7 +7,6 @@ import Balance from "./components/Balance";
 import Incomes from "./components/Incomes";
 import Expenses from "./components/Expenses";
 import useColorScheme from "../../../../hooks/useColorScheme";
-import Colors from "../../../../constants/Colors";
 import CalendarModal from "../../../../components/CalendarModal";
 import CalendarIcon from "./components/CalendarIcon";
 import DatesRange from './components/DatesRange';
@@ -23,7 +22,6 @@ interface SummaryProps {
 }
 
 const Summary: React.FC<SummaryProps> = ({totalExpenses, totalIncomes, setCategory, datesRange, setDatesRange}) => {
-    const colorScheme = useColorScheme();
     const [calendarModal, setOpenCalendarModal] = useState<boolean>(false)
 
     return (
@@ -40,7 +38,7 @@ const Summary: React.FC<SummaryProps> = ({totalExpenses, totalIncomes, setCatego
 
                     <DatesRange range={datesRange} />
 
-                    <Ionicons name="filter-outline" size={28} color={Colors[colorScheme].background}/>
+                    <Ionicons name="filter-outline" size={28} color='white' />
                 </View>
 
                 <Balance totalIncomes={totalIncomes} totalExpenses={totalExpenses}/>

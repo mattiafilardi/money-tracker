@@ -1,8 +1,6 @@
 import React from 'react';
 import {StyledText} from "../../../../../components/StyledText";
-import Colors from "../../../../../constants/Colors";
 import {StyleSheet, TouchableOpacity} from "react-native";
-import useColorScheme from "../../../../../hooks/useColorScheme";
 import {Transaction} from "../../../../../model/Transaction";
 
 interface IncomesProps {
@@ -11,16 +9,14 @@ interface IncomesProps {
 }
 
 const Incomes: React.VFC<IncomesProps> = ({setCategory, totalIncomes}) => {
-    const colorScheme = useColorScheme()
-
     return (
         <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => setCategory('income')}>
             <StyledText>
                 <StyledText style={styles.emoji}>🤑  </StyledText>
-                <StyledText style={[styles.transactionTitle, {color: Colors[colorScheme].background}]}>INCOMES</StyledText>
+                <StyledText style={styles.transactionTitle}>INCOMES</StyledText>
             </StyledText>
 
-            <StyledText style={[styles.textTransactionNumber, {color: Colors[colorScheme].background}]}>
+            <StyledText style={styles.textTransactionNumber}>
                 € {totalIncomes.toFixed(2)}
             </StyledText>
         </TouchableOpacity>
@@ -31,7 +27,8 @@ const styles = StyleSheet.create({
     transactionTitle: {
         fontSize: 12,
         letterSpacing: 2,
-        opacity: 0.8
+        opacity: 0.8,
+        color: 'white'
     },
     emoji: {
         opacity: 1,
@@ -40,7 +37,8 @@ const styles = StyleSheet.create({
     textTransactionNumber: {
         fontSize: 18,
         letterSpacing: 1.5,
-        marginVertical: 10
+        marginVertical: 10,
+        color: 'white'
     }
 })
 

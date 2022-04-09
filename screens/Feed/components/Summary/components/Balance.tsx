@@ -14,10 +14,10 @@ const Balance: React.VFC<BalanceProps> = ({totalIncomes, totalExpenses}) => {
 
     return (
         <View style={styles.currentBalance}>
-            <StyledText style={[styles.textBalance, {color: Colors[colorScheme].background}]}>
+            <StyledText style={styles.textBalance}>
                 CURRENT BALANCE
             </StyledText>
-            <StyledText style={[styles.textBalanceNumber, {color: Colors[colorScheme].background}]}>
+            <StyledText style={styles.textBalanceNumber}>
                 € {(totalIncomes - totalExpenses).toFixed(2)}
             </StyledText>
         </View>
@@ -32,12 +32,14 @@ const styles = StyleSheet.create({
     textBalance: {
         fontSize: 12,
         letterSpacing: 2,
-        opacity: 0.8
+        opacity: 0.8,
+        color: 'white'
     },
     textBalanceNumber: {
         fontSize: 36,
         letterSpacing: 3,
-        marginVertical: 10
+        marginVertical: 10,
+        color: 'white'
     }
 });
 

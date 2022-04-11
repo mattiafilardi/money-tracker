@@ -11,7 +11,6 @@ interface ExpensesListItemProps {
 }
 
 //TODO: implement useMemo for avoid re-rendering?
-// TODO: check if categories exists
 
 const ExpensesListItem: React.VFC<ExpensesListItemProps> = ({expense}) => {
     return (
@@ -19,14 +18,18 @@ const ExpensesListItem: React.VFC<ExpensesListItemProps> = ({expense}) => {
             <View style={styles.header}>
                 <StyledText style={styles.textHeader}>{formatDate(expense.properties.Date.date.start)}</StyledText>
 
-                <CategoriesList categories={expense.properties.Categoria.multi_select} />
+                {expense.properties.Categoria.multi_select.length ?
+                    <CategoriesList categories={expense.properties.Categoria.multi_select}/> : null}
             </View>
 
             <View style={styles.content}>
                 <View style={styles.row}>
                     {expense.icon ?
-                        <Text style={styles.icon}>{expense.icon.emoji}</Text> :
-                        <Text style={styles.icon}>{expense.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                        <Text style={styles.icon}>{expense.icon.emoji}</Text> : (
+                            expense.properties.Categoria.multi_select && expense.properties.Categoria.multi_select.length ?
+                                <Text
+                                    style={styles.icon}>{expense.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                                : null)
                     }
 
                     <StyledText style={styles.textName}>{expense.properties.Spesa.title[0].text.content}</StyledText>

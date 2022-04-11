@@ -16,14 +16,18 @@ const IncomesListItem: React.VFC<IncomesListItemProps> = ({income}) => {
             <View style={styles.header}>
                 <StyledText style={styles.textHeader}>{formatDate(income.properties.Data.date.start)}</StyledText>
 
-                <CategoriesList categories={income.properties.Categoria.multi_select} />
+                {income.properties.Categoria.multi_select.length ?
+                    <CategoriesList categories={income.properties.Categoria.multi_select}/> : null}
             </View>
 
             <View style={styles.content}>
                 <View style={styles.row}>
                     {income.icon ?
-                        <Text style={styles.icon}>{income.icon.emoji}</Text> :
-                        <Text style={styles.icon}>{income.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                        <Text style={styles.icon}>{income.icon.emoji}</Text> : (
+                            income.properties.Categoria.multi_select && income.properties.Categoria.multi_select.length ?
+                                <Text
+                                    style={styles.icon}>{income.properties.Categoria.multi_select[0].name.split(' ')[1]}</Text>
+                                : null)
                     }
                     <StyledText style={styles.textName}>{income.properties.Entrata.title[0].text.content}</StyledText>
                 </View>

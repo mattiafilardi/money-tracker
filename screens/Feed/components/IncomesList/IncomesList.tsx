@@ -25,7 +25,7 @@ const IncomesList: React.FC<IncomesListProps> = ({incomes, getIncomes, datesRang
                 data={incomes}
                 keyExtractor={(expense : Income) => expense.id}
                 renderItem={({item}: ListRenderItemInfo<Income>) => <IncomesListItem income={item} />}
-                initialNumToRender={4}
+                initialNumToRender={5}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}

@@ -25,7 +25,7 @@ const ExpensesList: React.FC<ExpensesListProps> = ({expenses, getExpenses, dates
                 data={expenses}
                 keyExtractor={(expense : Expense) => expense.id}
                 renderItem={({item}: ListRenderItemInfo<Expense>) => <ExpensesListItem expense={item} />}
-                initialNumToRender={4}
+                initialNumToRender={5}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}

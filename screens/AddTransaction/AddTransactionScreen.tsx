@@ -1,4 +1,4 @@
-import {Keyboard, SafeAreaView, StyleSheet, TextInput, TouchableWithoutFeedback} from 'react-native';
+import {Keyboard, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback} from 'react-native';
 
 import {View} from '../../components/Themed';
 import {RootTabScreenProps} from '../../types';
@@ -16,8 +16,8 @@ import {useExpenses} from "../../hooks/useExpenses";
 export default function AddTransactionScreen({navigation}: RootTabScreenProps<'AddTab'>) {
     const colorScheme = useColorScheme();
 
-    const {retrieveCategoryProperty, insertIncome} = useIncomes()
-    const {insertExpense} = useExpenses();
+    const {retrieveCategoryProperty: retrieveIncomeCategoryProperty, insertIncome} = useIncomes()
+    const {retrieveCategoryProperty : retrieveExpenseCategoryProperty, insertExpense} = useExpenses();
 
     const [transactionType, setTransactionType] = useState<Transaction['type']>('expense')
     const [transactionAmount, setTransactionAmount] = useState<number>(0);
@@ -30,23 +30,26 @@ export default function AddTransactionScreen({navigation}: RootTabScreenProps<'A
                 <GoBack navigation={navigation}/>
             </View>
 
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={styles.inputContainer}>
-                    <TextInput keyboardType='numeric'
-                               onChangeText={(text) => setTransactionAmount(Number(text))}
-                               style={styles.amountInput}
-                               placeholder="0  EUR €"
-                               placeholderTextColor={Colors[colorScheme].tabIconDefault}
-                    />
-                </View>
-            </TouchableWithoutFeedback>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                    <View style={styles.inputContainer}>
+                        <TextInput keyboardType='numeric'
+                                   onChangeText={(text) => setTransactionAmount(Number(text))}
+                                   style={styles.amountInput}
+                                   placeholder="0  EUR €"
+                                   placeholderTextColor={Colors[colorScheme].tabIconDefault}
+                        />
+                    </View>
+                </TouchableWithoutFeedback>
 
-            <TransactionSwitch transactionType={transactionType} setTransactionType={setTransactionType}/>
+                <TransactionSwitch transactionType={transactionType} setTransactionType={setTransactionType}/>
 
-            {transactionType === 'expense' && <ExpenseForm insertExpense={insertExpense} amount={transactionAmount}/>}
+                {transactionType === 'expense' && <ExpenseForm insertExpense={insertExpense} amount={transactionAmount}
+                                                               retrieveCategoryProperty={retrieveExpenseCategoryProperty}/>}
 
-            {transactionType === 'income' && <IncomeForm insertIncome={insertIncome} amount={transactionAmount}
-                                                         retrieveCategoryProperty={retrieveCategoryProperty}/>}
+                {transactionType === 'income' && <IncomeForm insertIncome={insertIncome} amount={transactionAmount}
+                                                             retrieveCategoryProperty={retrieveIncomeCategoryProperty}/>}
+            </ScrollView>
         </SafeAreaView>
     );
 };

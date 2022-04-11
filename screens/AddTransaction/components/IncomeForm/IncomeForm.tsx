@@ -14,6 +14,7 @@ import useColorScheme from "../../../../hooks/useColorScheme";
 import Colors from "../../../../constants/Colors";
 import {MultiSelect} from "../../../../model/Income";
 import { useForm, Controller } from "react-hook-form";
+import CategoryListItem from "./components/CategoryListItem";
 
 interface IncomeFormProps {
     insertIncome: () => void,
@@ -23,7 +24,19 @@ interface IncomeFormProps {
 
 const IncomeForm: React.FC<IncomeFormProps> = ({insertIncome, amount, retrieveCategoryProperty}) => {
     const colorScheme = useColorScheme();
+
     const [categories, setCategories] = useState<MultiSelect[] | null>(null)
+    const [selectedCategories, setSelectedCategories] = useState<MultiSelect[] | []>([])
+
+    const addCategory = (category: MultiSelect) => {
+        const categories = [...selectedCategories, category]
+        setSelectedCategories(categories)
+    }
+
+    const removeCategory = (id: string) => {
+        const categories = selectedCategories.filter(category => category.id !== id)
+        setSelectedCategories(categories)
+    }
 
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
@@ -47,19 +60,12 @@ const IncomeForm: React.FC<IncomeFormProps> = ({insertIncome, amount, retrieveCa
         <View
             style={styles.container}
         >
-            <FlatList
-                data={categories}
-                numColumns={4}
-                style={{ flexGrow: 0 }}
-                scrollEnabled={false}
-                contentContainerStyle={{ alignItems: 'flex-start' }}
-                renderItem={(category) => (
-                    <View style={{ height: 75, width: 70, alignItems: 'center', marginHorizontal: 5, marginVertical: 10}}>
-                        <View style={{ borderRadius: 50, height: 50, width: 50, backgroundColor: Colors[colorScheme].tint}} />
-                        <Text style={{ marginTop: 10}}>{category.item.name}</Text>
-                    </View>
-                )}
-            />
+
+            <View style={styles.categoriesContainer}>
+                {categories?.map(category => (
+                    <CategoryListItem category={category} key={category.id} addCategory={addCategory} removeCategory={removeCategory} />
+                ))}
+            </View>
 
             {categories && (
                 <>
@@ -100,6 +106,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+    },
+    categoriesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     button: {
         padding: 20,

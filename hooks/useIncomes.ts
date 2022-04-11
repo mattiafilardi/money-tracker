@@ -17,10 +17,8 @@ export const useIncomes = () => {
         getIncomes()
     }, [])
 
-    const getIncomes = async (startDate: string = getFirstDayOfMonth(Date.now()), endDate: string = getLastDayOfMonth(Date.now())) => {
-        setLoading(true)
-
-        await notion.databases.query({
+    const getIncomesRequest = async (startDate: string, endDate: string, startCursor: string | undefined) => {
+        return await notion.databases.query({
             database_id: NOTION_INCOMES_DATABASE_ID,
             filter: {
                 and: [
@@ -38,6 +36,7 @@ export const useIncomes = () => {
                     },
                 ],
             },
+            start_cursor: startCursor,
             sorts: [
                 {
                     property: 'Data',
@@ -45,7 +44,27 @@ export const useIncomes = () => {
                 },
             ],
         })
-            .then(incomes => setIncomes(incomes.results as Income[]))
+    }
+
+    const getIncomes = async (startDate: string = getFirstDayOfMonth(Date.now()), endDate: string = getLastDayOfMonth(Date.now())) => {
+        setLoading(true)
+
+        getIncomesRequest(startDate, endDate, undefined)
+            .then(async incomes => {
+                let results = [...incomes.results]
+                let hasMore = incomes.has_more
+                let startCursor = incomes.next_cursor ? incomes.next_cursor : undefined
+
+                while(hasMore){
+                    let data = await getIncomesRequest(startDate, endDate, startCursor)
+
+                    hasMore = data.has_more
+                    startCursor = data.next_cursor ? data.next_cursor : undefined
+                    results = [...results, ...data.results]
+                }
+
+                setIncomes(incomes.results as Income[])
+            })
             .finally(() => setLoading(false))
     }
 

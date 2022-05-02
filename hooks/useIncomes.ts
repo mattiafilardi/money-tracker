@@ -4,6 +4,7 @@ import {Client} from "@notionhq/client";
 import {useEffect, useState} from "react";
 import {Income, MultiSelect} from "../model/Income";
 import {getFirstDayOfMonth, getLastDayOfMonth} from "../utils/dateFormat";
+import {Category} from "../screens/AddTransaction/components/Form/Form";
 
 const notion = new Client({
     auth: NOTION_SECRET,
@@ -69,25 +70,26 @@ export const useIncomes = () => {
     }
 
     const retrieveCategoryProperty = async () => {
+        setLoading(true)
         const response = await notion.databases.retrieve({ database_id: NOTION_INCOMES_DATABASE_ID });
+        setLoading(false)
         return response.properties.Categoria.multi_select.options as MultiSelect[]
     }
 
-    const insertIncome = async () => {
+    const insertIncome = async (form: {name: string, comment: string, emoji: string, date: string, categories: Category[]}, amount: number) => {
+        const icon = form.emoji.length ?  {icon: {emoji: form.emoji }} : undefined
+
         const response = await notion.pages.create({
             parent: {
                 database_id: NOTION_INCOMES_DATABASE_ID,
             },
-            icon: {
-                type: "emoji",
-                emoji: "🥬"
-            },
+            icon,
             properties: {
                 Entrata: {
                     title: [
                         {
                             text: {
-                                content: 'Prova API',
+                                content: form.name,
                             },
                         },
                     ],
@@ -96,17 +98,13 @@ export const useIncomes = () => {
                     rich_text: [
                         {
                             text: {
-                                content: 'Commento',
+                                content: form.comment,
                             },
                         },
                     ],
                 },
                 Categoria: {
-                    "multi_select": [
-                        {
-                            "name": "Stipendio"
-                        },
-                    ]
+                    "multi_select": form.categories
                 },
                 Data: {
                     "date": {
@@ -114,7 +112,7 @@ export const useIncomes = () => {
                     }
                 },
                 Amount: {
-                    number: 2.5,
+                    number: amount,
                 },
             }
         });

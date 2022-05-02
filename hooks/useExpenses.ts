@@ -44,7 +44,6 @@ export const useExpenses = () => {
         })
     }
 
-
     const getExpenses = async (startDate: string = getFirstDayOfMonth(Date.now()), endDate: string = getLastDayOfMonth(Date.now())) => {
         setLoading(true)
 
@@ -68,7 +67,9 @@ export const useExpenses = () => {
     }
 
     const retrieveCategoryProperty = async () => {
+        setLoading(true)
         const response = await notion.databases.retrieve({ database_id: NOTION_EXPENSES_DATABASE_ID });
+        setLoading(false)
         return response.properties.Categoria.multi_select.options as MultiSelect[]
     }
 

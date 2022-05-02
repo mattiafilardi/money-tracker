@@ -6,7 +6,6 @@ import {LinearGradient} from 'expo-linear-gradient';
 import Balance from "./components/Balance";
 import Incomes from "./components/Incomes";
 import Expenses from "./components/Expenses";
-import useColorScheme from "../../../../hooks/useColorScheme";
 import CalendarModal from "../../../../components/CalendarModal";
 import CalendarIcon from "./components/CalendarIcon";
 import DatesRange from './components/DatesRange';

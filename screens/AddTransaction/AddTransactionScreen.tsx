@@ -1,28 +1,51 @@
-import {Keyboard, SafeAreaView, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback} from 'react-native';
-
+import {
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+} from 'react-native';
 import {View} from '../../components/Themed';
 import {RootTabScreenProps} from '../../types';
 import GoBack from "../../components/GoBack";
 import useColorScheme from "../../hooks/useColorScheme";
 import Colors from "../../constants/Colors";
-import {useState} from "react";
+import React, {useState} from "react";
 import {Transaction} from "../../model/Transaction";
 import TransactionSwitch from "./components/TransactionSwitch";
-import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
-import IncomeForm from "./components/IncomeForm/IncomeForm";
 import {useIncomes} from "../../hooks/useIncomes";
 import {useExpenses} from "../../hooks/useExpenses";
+import AmountInput from "./components/Form/components/AmountInput";
+import Form, {Category} from "./components/Form/Form";
+import SendTransactionButton from "./components/SendTransactionButton";
+import {TransactionForm} from "../../model/TransactionForm";
+
+const initialFormData = {
+    name: '',
+    comment: '',
+    date: new Date(),
+    emoji: '',
+    categories: [] as Category[],
+    amount: 0,
+    error: {name: false, amount: false}
+}
 
 export default function AddTransactionScreen({navigation}: RootTabScreenProps<'AddTab'>) {
     const colorScheme = useColorScheme();
 
-    const {retrieveCategoryProperty: retrieveIncomeCategoryProperty, insertIncome} = useIncomes()
-    const {retrieveCategoryProperty : retrieveExpenseCategoryProperty, insertExpense} = useExpenses();
+    const {isLoading: isLoadingIncomes, retrieveCategoryProperty: retrieveIncomeCategoryProperty, insertIncome} = useIncomes()
+    const {isLoading: isLoadingExpenses, retrieveCategoryProperty : retrieveExpenseCategoryProperty, insertExpense} = useExpenses();
 
     const [transactionType, setTransactionType] = useState<Transaction['type']>('expense')
-    const [transactionAmount, setTransactionAmount] = useState<number>(0);
 
-    // TODO: emoji picker, finish income form (React Hook Form), call api after input fields have been filled
+    const [formValues, setFormValues] = useState<TransactionForm>(initialFormData)
+
+    const onSubmit = (data: TransactionForm) => {
+        setFormValues({...formValues, error: {amount: true, name: true}})
+
+
+
+    }
+
+    // TODO: emoji picker, finish form, call api after input fields have been filled
 
     return (
         <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
@@ -30,25 +53,25 @@ export default function AddTransactionScreen({navigation}: RootTabScreenProps<'A
                 <GoBack navigation={navigation}/>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                    <View style={styles.inputContainer}>
-                        <TextInput keyboardType='numeric'
-                                   onChangeText={(text) => setTransactionAmount(Number(text))}
-                                   style={styles.amountInput}
-                                   placeholder="0  EUR €"
-                                   placeholderTextColor={Colors[colorScheme].tabIconDefault}
-                        />
-                    </View>
-                </TouchableWithoutFeedback>
+            <AmountInput formValues={formValues} setFormValues={setFormValues} />
 
-                <TransactionSwitch transactionType={transactionType} setTransactionType={setTransactionType}/>
+            <TransactionSwitch transactionType={transactionType} setTransactionType={setTransactionType} />
 
-                {transactionType === 'expense' && <ExpenseForm insertExpense={insertExpense} amount={transactionAmount}
-                                                               retrieveCategoryProperty={retrieveExpenseCategoryProperty}/>}
+            <View style={[styles.divider, {backgroundColor: Colors[colorScheme].tint}]}/>
 
-                {transactionType === 'income' && <IncomeForm insertIncome={insertIncome} amount={transactionAmount}
-                                                             retrieveCategoryProperty={retrieveIncomeCategoryProperty}/>}
+            <ScrollView showsVerticalScrollIndicator={false} style={{ flexShrink: 1, marginBottom: 10 }}>
+                <Form
+                    isLoading={isLoadingExpenses || isLoadingIncomes}
+                    transactionType={transactionType}
+                    retrieveCategoryProperty={transactionType === 'income' ? retrieveIncomeCategoryProperty : retrieveExpenseCategoryProperty}
+                    formValues={formValues} setFormValues={setFormValues}
+                />
+
+                <SendTransactionButton
+                    formValues={formValues}
+                    message={transactionType === 'income' ? 'Add income' : 'Add expense'}
+                    onSubmit={onSubmit}
+                />
             </ScrollView>
         </SafeAreaView>
     );
@@ -64,16 +87,8 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginTop: 5
     },
-    inputContainer: {
-        marginTop: 5,
-        marginBottom: 15,
-        alignItems: 'center'
+    divider: {
+        height: 1,
+        marginTop: 40,
     },
-    amountInput: {
-        height: 50,
-        color: 'black',
-        fontWeight: 'bold',
-        fontSize: 35,
-        fontFamily: 'Optima'
-    }
 });

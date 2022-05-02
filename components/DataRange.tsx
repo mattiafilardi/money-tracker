@@ -15,8 +15,9 @@ const DataRange: React.FC<DataRangeProps> = ({initialRange, onSuccess, theme}) =
     const [state, setState]= useState({isFromDatePicked: false, isToDatePicked: false, markedDates: {}, fromDate: ''})
 
     const setupMarkedDates = (fromDate: DateData['dateString'], toDate: DateData['dateString'], markedDates: any) => {
-        let mFromDate = new XDate(fromDate)
-        let mToDate = new XDate(toDate)
+        let mFromDate = new XDate(fromDate, true)
+        let mToDate = new XDate(toDate, true)
+
         let range = mFromDate.diffDays(mToDate)
         if (range >= 0) {
             if (range == 0) {

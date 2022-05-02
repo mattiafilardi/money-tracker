@@ -42,7 +42,7 @@ export default function FeedScreen({navigation}: RootTabScreenProps<'TabOne'>) {
 
     return (
         <>
-            {isLoadingExpenses || isLoadingIncomes ? <Loader/> : (
+            {isLoadingExpenses || isLoadingIncomes ? <Loader colors={['#BAADFF', '#9381FF', '#745CFF']}/> : (
                 <View style={styles.container}>
                     <LinearGradient
                         colors={['#BAADFF', '#9381FF', '#745CFF']}

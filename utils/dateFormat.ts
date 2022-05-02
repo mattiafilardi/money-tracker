@@ -1,5 +1,5 @@
 export const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('en-GB', { timeZone: 'UTC' });
+    return new Date(date).toLocaleDateString();
 }
 
 export const getFirstDayOfMonth = (chosenDate: string | number) => {

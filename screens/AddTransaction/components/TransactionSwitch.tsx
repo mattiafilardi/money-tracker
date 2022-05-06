@@ -15,19 +15,19 @@ const TransactionSwitch: React.VFC<TransactionSwitchProps> = ({transactionType, 
 
     return (
         <View style={styles.switchContainer}>
-            <View style={[styles.switch, {backgroundColor: Colors[colorScheme].secondaryColor}]}>
+            <View style={[styles.switch, {backgroundColor: Colors[colorScheme.mode].secondaryColor}]}>
                 <TouchableOpacity
                     onPress={() => {setTransactionType('expense')}}
-                    style={[styles.switchButton, {backgroundColor: transactionType === 'expense' ? Colors[colorScheme].tint : Colors[colorScheme].secondaryColor}]}>
+                    style={[styles.switchButton, {backgroundColor: transactionType === 'expense' ? Colors[colorScheme.mode].tint : Colors[colorScheme.mode].secondaryColor}]}>
                     <Text style={
-                        [styles.switchButtonText, {color: transactionType === 'expense' ? 'white' : Colors[colorScheme].tint}]
+                        [styles.switchButtonText, {color: transactionType === 'expense' ? 'white' : Colors[colorScheme.mode].tint}]
                     }>EXPENSE</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {setTransactionType('income')}}
-                    style={[styles.switchButton, {backgroundColor: transactionType === 'income' ? Colors[colorScheme].tint : Colors[colorScheme].secondaryColor}]}>
+                    style={[styles.switchButton, {backgroundColor: transactionType === 'income' ? Colors[colorScheme.mode].tint : Colors[colorScheme.mode].secondaryColor}]}>
                     <Text style={
-                        [styles.switchButtonText, {color: transactionType === 'income' ? 'white' : Colors[colorScheme].tint}]
+                        [styles.switchButtonText, {color: transactionType === 'income' ? 'white' : Colors[colorScheme.mode].tint}]
                     }>INCOME</Text>
                 </TouchableOpacity>
             </View>

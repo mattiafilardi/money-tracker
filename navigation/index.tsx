@@ -20,11 +20,13 @@ import {RootStackParamList, RootTabParamList, RootTabScreenProps} from '../types
 import LinkingConfiguration from './LinkingConfiguration';
 import AddTransactionScreen from "../screens/AddTransaction/AddTransactionScreen";
 
-export default function Navigation({colorScheme}: { colorScheme: ColorSchemeName }) {
+export default function Navigation() {
+    const colorScheme = useColorScheme()
+
     return (
         <NavigationContainer
             linking={LinkingConfiguration}
-            theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            theme={colorScheme.mode === 'dark' ? DarkTheme : DefaultTheme}>
             <RootNavigator/>
         </NavigationContainer>
     );
@@ -62,10 +64,11 @@ function BottomTabNavigator() {
             initialRouteName="TabOne"
             screenOptions={{
                 headerShown: false,
-                tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
-                tabBarActiveTintColor: Colors[colorScheme].tint,
+                tabBarInactiveTintColor: Colors[colorScheme.mode].tabIconDefault,
+                tabBarActiveTintColor: Colors[colorScheme.mode].tint,
                 tabBarShowLabel: false,
                 tabBarStyle: {
+                    height: 90,
                     paddingVertical: 5,
                     marginBottom: 2
                 },
@@ -88,7 +91,7 @@ function BottomTabNavigator() {
                             <FontAwesome
                                 name="info-circle"
                                 size={25}
-                                color={Colors[colorScheme].text}
+                                color={Colors[colorScheme.mode].text}
                                 style={{marginRight: 15}}
                             />
                         </Pressable>
@@ -100,7 +103,7 @@ function BottomTabNavigator() {
                 component={AddTransactionScreen}
                 options={{
                     title: '',
-                    tabBarIcon: ({color}) => <AntDesign name="pluscircle" size={44} color={Colors[colorScheme].tint} />,
+                    tabBarIcon: ({color}) => <AntDesign name="pluscircle" size={44} color={Colors[colorScheme.mode].tint} />,
                 }}
             />
             <BottomTab.Screen

@@ -10,8 +10,6 @@ interface BalanceProps {
 }
 
 const Balance: React.VFC<BalanceProps> = ({totalIncomes, totalExpenses}) => {
-    const colorScheme = useColorScheme();
-
     return (
         <View style={styles.currentBalance}>
             <StyledText style={styles.textBalance}>

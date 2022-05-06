@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from "react-native";
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
 import {Transaction} from "../../../../model/Transaction";
 import {LinearGradient} from 'expo-linear-gradient';
 import Balance from "./components/Balance";
@@ -9,6 +9,8 @@ import Expenses from "./components/Expenses";
 import CalendarModal from "../../../../components/CalendarModal";
 import CalendarIcon from "./components/CalendarIcon";
 import DatesRange from './components/DatesRange';
+import useColorScheme from "../../../../hooks/useColorScheme";
+import useTheme from "../../../../hooks/useTheme";
 
 type DatesRange = { start: string, end: string }
 
@@ -22,6 +24,7 @@ interface SummaryProps {
 
 const Summary: React.FC<SummaryProps> = ({totalExpenses, totalIncomes, setCategory, datesRange, setDatesRange}) => {
     const [calendarModal, setOpenCalendarModal] = useState<boolean>(false)
+    const {toggleTheme} = useColorScheme()
 
     return (
         <LinearGradient
@@ -37,7 +40,7 @@ const Summary: React.FC<SummaryProps> = ({totalExpenses, totalIncomes, setCatego
 
                     <DatesRange range={datesRange} />
 
-                    <Ionicons name="filter-outline" size={28} color='white' />
+                    <MaterialCommunityIcons name="theme-light-dark" size={24} color="white" onPress={() => toggleTheme()}/>
                 </View>
 
                 <Balance totalIncomes={totalIncomes} totalExpenses={totalExpenses}/>

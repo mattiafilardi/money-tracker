@@ -21,10 +21,10 @@ import {TransactionForm} from "../../model/TransactionForm";
 const initialFormData = {
     name: '',
     comment: '',
-    date: new Date(),
+    date: new Date().toLocaleDateString(),
     emoji: '',
     categories: [] as Category[],
-    amount: 0,
+    amount: null,
     error: {name: false, amount: false}
 }
 
@@ -38,17 +38,23 @@ export default function AddTransactionScreen({navigation}: RootTabScreenProps<'A
 
     const [formValues, setFormValues] = useState<TransactionForm>(initialFormData)
 
-    const onSubmit = (data: TransactionForm) => {
-        setFormValues({...formValues, error: {amount: true, name: true}})
+    const onSubmit = () => {
+        if(!formValues.amount || !formValues.name.length) {
+            setFormValues({...formValues, error: {name: !formValues.name.length, amount: !formValues.amount}})
+            return
+        }
 
-
-
+        if(transactionType === 'income'){
+            insertIncome(formValues)
+                .then(() => setFormValues(initialFormData))
+        } else {
+            insertExpense()
+                .then(() => setFormValues(initialFormData))
+        }
     }
 
-    // TODO: emoji picker, finish form, call api after input fields have been filled
-
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme].background}]}>
+        <SafeAreaView style={[styles.container, {backgroundColor: Colors[colorScheme.mode].background}]}>
             <View style={styles.header}>
                 <GoBack navigation={navigation}/>
             </View>
@@ -57,7 +63,7 @@ export default function AddTransactionScreen({navigation}: RootTabScreenProps<'A
 
             <TransactionSwitch transactionType={transactionType} setTransactionType={setTransactionType} />
 
-            <View style={[styles.divider, {backgroundColor: Colors[colorScheme].tint}]}/>
+            <View style={[styles.divider, {backgroundColor: Colors[colorScheme.mode].tint}]}/>
 
             <ScrollView showsVerticalScrollIndicator={false} style={{ flexShrink: 1, marginBottom: 10 }}>
                 <Form
@@ -68,7 +74,6 @@ export default function AddTransactionScreen({navigation}: RootTabScreenProps<'A
                 />
 
                 <SendTransactionButton
-                    formValues={formValues}
                     message={transactionType === 'income' ? 'Add income' : 'Add expense'}
                     onSubmit={onSubmit}
                 />

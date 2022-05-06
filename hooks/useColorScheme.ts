@@ -1,5 +1,6 @@
-import { ColorSchemeName, useColorScheme as _useColorScheme } from 'react-native';
+import {useContext} from "react";
+import {themeContext} from "../context/ThemeContext";
 
-export default function useColorScheme(): NonNullable<ColorSchemeName> {
-  return 'dark';
+export default function useColorScheme(){
+  return useContext(themeContext);
 }

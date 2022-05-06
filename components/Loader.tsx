@@ -17,7 +17,7 @@ const Loader: React.FC<LoaderProps> = ({colors}) => {
             colors={colors || []}
             style={styles.container}
         >
-            <ActivityIndicator color={Colors[colorScheme].text} animating />
+            <ActivityIndicator color={Colors[colorScheme.mode].text} animating />
         </LinearGradient>
     );
 };

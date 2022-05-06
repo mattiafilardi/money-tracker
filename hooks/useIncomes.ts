@@ -4,7 +4,7 @@ import {Client} from "@notionhq/client";
 import {useEffect, useState} from "react";
 import {Income, MultiSelect} from "../model/Income";
 import {getFirstDayOfMonth, getLastDayOfMonth} from "../utils/dateFormat";
-import {Category} from "../screens/AddTransaction/components/Form/Form";
+import {TransactionForm} from "../model/TransactionForm";
 
 const notion = new Client({
     auth: NOTION_SECRET,
@@ -76,14 +76,15 @@ export const useIncomes = () => {
         return response.properties.Categoria.multi_select.options as MultiSelect[]
     }
 
-    const insertIncome = async (form: {name: string, comment: string, emoji: string, date: string, categories: Category[]}, amount: number) => {
-        const icon = form.emoji.length ?  {icon: {emoji: form.emoji }} : undefined
+    const insertIncome = async (form: TransactionForm) => {
+        const date = new Date(form.date).toISOString().split('T', 1)[0]
+        console.warn(form.date, date)
 
         const response = await notion.pages.create({
             parent: {
                 database_id: NOTION_INCOMES_DATABASE_ID,
             },
-            icon,
+           icon: form.emoji?.length ? { emoji: form.emoji } : undefined,
             properties: {
                 Entrata: {
                     title: [
@@ -108,14 +109,16 @@ export const useIncomes = () => {
                 },
                 Data: {
                     "date": {
-                        "start": "2022-04-10"
+                        "start": date
                     }
                 },
                 Amount: {
-                    number: amount,
+                    number: form.amount,
                 },
             }
         });
+
+        console.warn(response)
     }
 
     return {

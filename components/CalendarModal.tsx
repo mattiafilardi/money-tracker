@@ -27,7 +27,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({visible, setVisible, dates
                 onSuccess={(s, e) => setDatesRange({
                     start: s, end: e
                 })}
-                theme={{markColor: Colors[colorScheme].tint, markTextColor: Colors[colorScheme].background}}
+                theme={{markColor: Colors[colorScheme.mode].tint, markTextColor: Colors[colorScheme.mode].background}}
             />
         </Modal>
     );
